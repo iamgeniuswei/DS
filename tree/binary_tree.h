@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <algorithm>
 #include <iostream>
+#include <queue>
+#include <stack>
 template<typename T> class BinaryNode{
 private:
     T _data;
@@ -21,9 +23,9 @@ public:
 public:
     BinaryNode<T> *insertAsLC(T const& e);
     BinaryNode<T> *insertAlRC(T const& e);
-    BinaryNode<T> lc() const {return _lc;}
-    BinaryNode<T> rc() const {return _rc;}
-    BinaryNode<T> parent() const {return _parent;}
+    BinaryNode<T> *lc() const {return _lc;}
+    BinaryNode<T> *rc() const {return _rc;}
+    BinaryNode<T> *parent() const {return _parent;}
     T data() const{
         return _data;
     }
@@ -72,10 +74,12 @@ public:
         return -1;
     }
 
-    void traversePre_R(BinaryNode<T> *x);
+    void traversePre_R(BinaryNode<T> *x, std::queue<BinaryNode<T> *> &container);
+    void traversePost(BinaryNode<T> *x);
     int size() const{return _size;}
 
-
+private:
+    void gotoHLVFL(std::stack<BinaryNode<T>*> &stack);
 
 };
 
@@ -127,13 +131,52 @@ BinaryNode<T> *BinaryTree<T>::insertAsRC(BinaryNode<T> *x, const T &e)
 }
 
 template<typename T>
-void BinaryTree<T>::traversePre_R(BinaryNode<T> *x)
+void BinaryTree<T>::traversePre_R(BinaryNode<T> *x, std::queue<BinaryNode<T>*> &container)
 {
     if(x == nullptr)
         return;
     std::cout << x->data() << std::endl;
-    traversePre_R(x->lc());
-    traversePre_R(x->rc());
+    container.push(x);
+    traversePre_R(x->lc(), container);
+    traversePre_R(x->rc(), container);
+}
+
+template<typename T>
+void BinaryTree<T>::traversePost(BinaryNode<T> *x)
+{
+    std::stack<BinaryNode<T> *> stack;
+    stack.push(x);
+    while (!stack.empty()) {
+        BinaryNode<T> *top = stack.top();
+        if(top != x->parent())
+        {
+            gotoHLVFL(stack);
+        }
+        x = stack.top();
+        std::cout << x->data() << std::endl;
+        stack.pop();
+    }
+}
+
+template<typename T>
+void BinaryTree<T>::gotoHLVFL(std::stack<BinaryNode<T> *> &stack)
+{
+    while (true)
+    {
+        BinaryNode<T> *cur = stack.top();
+        if(cur->lc() != nullptr)
+        {
+            if(cur->rc() != nullptr)
+                stack.push(cur->rc());
+            stack.push(cur->lc());
+        }
+        else if(cur->rc() != nullptr) {
+            stack.push(cur->rc());
+        }
+        else {
+            break;
+        }
+    }
 }
 
 
