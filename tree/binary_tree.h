@@ -23,6 +23,14 @@ public:
 public:
     BinaryNode<T> *insertAsLC(T const& e);
     BinaryNode<T> *insertAlRC(T const& e);
+    void setLC(BinaryNode<T> * lc)
+    {
+        _lc = lc;
+    }
+    void setRC(BinaryNode<T> * rc)
+    {
+        _rc = rc;
+    }
     BinaryNode<T> *lc() const {return _lc;}
     BinaryNode<T> *rc() const {return _rc;}
     BinaryNode<T> *parent() const {return _parent;}
@@ -67,6 +75,8 @@ public:
     BinaryNode<T> *insertAsRoot(T const& e);
     BinaryNode<T> *insertAsLC(BinaryNode<T> *x, T const& e);
     BinaryNode<T> *insertAsRC(BinaryNode<T> *x, T const& e);
+    BinaryNode<T> *attachAsLC(BinaryNode<T> *x, BinaryTree<T> *&tree);
+    BinaryNode<T> *attachAsRC(BinaryNode<T> *x, BinaryTree<T> *&tree);
     inline int stature(BinaryNode<T> *x)
     {
         if(x != nullptr)
@@ -128,6 +138,28 @@ BinaryNode<T> *BinaryTree<T>::insertAsRC(BinaryNode<T> *x, const T &e)
     _size++;
     updateHeightAbove(x);
     return x->rc();
+}
+
+template<typename T>
+BinaryNode<T> *BinaryTree<T>::attachAsLC(BinaryNode<T> *x, BinaryTree<T> *&tree)
+{
+    if(tree->root() != nullptr)
+    {
+        x->setLC(tree->root());
+        _size += tree->size();
+        updateHeightAbove(x);
+    }
+}
+
+template<typename T>
+BinaryNode<T> *BinaryTree<T>::attachAsRC(BinaryNode<T> *x, BinaryTree<T> *&tree)
+{
+    if(tree->root() != nullptr)
+    {
+        x->setRC(tree->root());
+        _size += tree->size();
+        updateHeightAbove(x);
+    }
 }
 
 template<typename T>
