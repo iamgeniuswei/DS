@@ -31,6 +31,14 @@ public:
     {
         _rc = rc;
     }
+    void setParent(BinaryNode<T> *parent)
+    {
+        _parent = parent;
+    }
+    void setData(const T& e)
+    {
+        _data = e;
+    }
     BinaryNode<T> *lc() const {return _lc;}
     BinaryNode<T> *rc() const {return _rc;}
     BinaryNode<T> *parent() const {return _parent;}
@@ -44,6 +52,10 @@ public:
     void setHeight(int new_height){
         _height = new_height;
     }
+
+
+    BinaryNode<T> *succ();
+
 };
 
 template<typename T>
@@ -58,9 +70,31 @@ BinaryNode<T> *BinaryNode<T>::insertAlRC(const T &e)
     return _rc = new BinaryNode<T>(e, this);
 }
 
+template<typename T>
+BinaryNode<T> *BinaryNode<T>::succ()
+{
+    BinaryNode<T>* _succ = nullptr;
+    if(_rc)
+    {
+        _succ = _rc;
+        while (_succ->_lc != nullptr)
+        {
+            _succ = _succ->_lc;
+        }
+    }
+    else {
+        _succ = this;
+        while (_succ->_parent != nullptr && (_succ->_parent->_rc) == _succ) {
+            _succ = _succ->_parent;
+        }
+        _succ = _succ->_parent;
+    }
+    return _succ;
+}
+
 
 template<typename T> class BinaryTree{
-private:
+protected:
     int _size = 0;
     BinaryNode<T> *_root = nullptr;
 
