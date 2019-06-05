@@ -304,3 +304,56 @@ TEST_CASE("8. remove() in BST<T>")
     remove = tree->remove(36);
     REQUIRE(remove == true);
 }
+
+#include "../tree/avl.h"
+TEST_CASE("9. balanced() in AVL<T>")
+{
+    AVL<int> *tree = new AVL<int>();
+
+    //Create tree's root
+    BinaryNode<int> *root = tree->insertAsRoot(36);
+    //root test.
+    REQUIRE(root == tree->root());
+
+    //Create first level
+    BinaryNode<int> *lc_27 = tree->insertAsLC(root, 27);
+    BinaryNode<int> *rc_58 = tree->insertAsRC(root, 58);
+    //first level test
+    REQUIRE(lc_27 == root->lc());
+    REQUIRE(rc_58 == root->rc());
+
+    //Create second level
+    BinaryNode<int> *lc_1 = tree->insertAsLC(lc_27, 6);
+//    BinaryNode<int> *rc_3 = tree->insertAsRC(lc_2, 3);
+    BinaryNode<int> *lc_53 = tree->insertAsLC(rc_58, 53);
+    BinaryNode<int> *rc_69 = tree->insertAsRC(rc_58, 69);
+    //second level test
+    REQUIRE(lc_1 == lc_27->lc());
+//    REQUIRE(rc_3 == lc_2->rc());
+    REQUIRE(lc_53 == rc_58->lc());
+    REQUIRE(rc_69 == rc_58->rc());
+
+    BinaryNode<int> *lc_46 = tree->insertAsLC(lc_53, 46);
+    BinaryNode<int> *rc_54 = tree->insertAsRC(lc_53, 54);
+//    BinaryNode<int> *rc_55 = tree->insertAsRC(rc_54, 55);
+
+    REQUIRE(tree->balanced(root) == false);
+    REQUIRE(tree->balanced(lc_53) == true);
+}
+
+TEST_CASE("9. insert34() in AVL<T>")
+{
+    AVL<int> *tree = new AVL<int>();
+
+    //Create tree's root
+    BinaryNode<int> *root = tree->insertAsRoot(1);
+    BinaryNode<int> *ret = nullptr;
+    ret = tree->insert34(3);
+    ret = tree->insert34(2);
+    ret = tree->insert34(5);
+    ret = tree->insert34(4);
+    pause();
+//    ret = tree->insert(4);
+//    ret = tree->insert(5);
+
+}

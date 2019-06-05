@@ -53,6 +53,32 @@ public:
         _height = new_height;
     }
 
+    bool hasLChild() const
+    {
+        return _lc != nullptr;
+    }
+    bool hasRChild() const
+    {
+        return _rc != nullptr;
+    }
+    bool isRoot() const
+    {
+        return _parent == nullptr;
+    }
+
+    bool isLChild() const
+    {
+        if(_parent == nullptr)
+            return false;
+        return _parent->lc() == this;
+    }
+
+    bool isRChild() const
+    {
+        if(_parent == nullptr)
+            return false;
+        return _parent->rc() == this;
+    }
 
     BinaryNode<T> *succ();
 
