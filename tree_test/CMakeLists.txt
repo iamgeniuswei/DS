@@ -11,3 +11,5 @@ file(GLOB_RECURSE DIR_TREE_TEST_SRCS
 # specify the target.
 add_executable(test_tree "test.cpp")
 target_link_libraries(test_tree tree)
+target_link_libraries(test_tree gtest)
+target_link_libraries(test_tree pthread)

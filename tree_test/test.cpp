@@ -1,3 +1,4 @@
+/*
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include "../tree/binary_tree.h"
@@ -352,8 +353,29 @@ TEST_CASE("9. insert34() in AVL<T>")
     ret = tree->insert34(2);
     ret = tree->insert34(5);
     ret = tree->insert34(4);
-    pause();
+    ret = tree->insert34(7);
+    REQUIRE(tree->root()->data() == 4);
+//    pause();
 //    ret = tree->insert(4);
 //    ret = tree->insert(5);
 
+}
+*/
+#include <gtest/gtest.h>
+
+int add(int a, int b)
+{
+    return a+b;
+}
+
+TEST(testCase, test0)
+{
+    EXPECT_EQ(add(2, 3), 5);
+}
+
+
+int main(int argc, char **argv)
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
